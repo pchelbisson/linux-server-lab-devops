@@ -1,0 +1,11 @@
+# Example sshd_config (safe for GitHub)
+
+Port 22
+Protocol 2
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+ChallengeResponseAuthentication no
+UsePAM yes
+AllowTcpForwarding no
+X11Forwarding no

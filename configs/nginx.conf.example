@@ -1,0 +1,23 @@
+# Example nginx.conf
+
+user www-data;
+worker_processes auto;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile on;
+
+    server {
+        listen 80 default_server;
+        server_name _;
+
+        root /var/www/html;
+        index index.html;
+    }
+}

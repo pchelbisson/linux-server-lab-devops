@@ -1,0 +1,8 @@
+# Example Fail2Ban config
+[sshd]
+enabled = true
+port = ssh
+logpath = /var/log/auth.log
+maxretry = 5
+bantime  = 10m
+findtime = 10m
