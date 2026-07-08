@@ -1,13 +1,32 @@
 #!/bin/bash
+set -euo pipefail
 
-# Директория, куда будем сохранять архив
-BACKUP_DIR="/home/devops/backup"
+# The directory where we will save the archive
+BACKUP_DIR="$HOME/devops/backup"
 
-# Имя файла с датой
+if [ ! -d "$BACKUP_DIR" ]; then
+    mkdir -p "$BACKUP_DIR"
+fi
+
+# The name of the file with the date
 DATE=$(date +'%Y-%m-%d_%H-%M')
 
-# Какие директории бэкапим
-TARGETS="/etc/nginx /etc/ssh /etc/fail2ban"
+# Which directories we backup
+TARGETS=(/etc/nginx /etc/ssh /etc/fail2ban)
 
-# Создаём архив
-tar -czvf $BACKUP_DIR/configs_backup_$DATE.tar.gz $TARGETS
+set +e
+
+# Create the archive
+tar -czvf "$BACKUP_DIR"/configs_backup_"$DATE".tar.gz "${TARGETS[@]}"
+
+if [ $? -eq 0 ]; then
+    echo "$DATE: [SUCCESS] Backup created successfully at $BACKUP_DIR/configs_backup_$DATE.tar.gz" >> "$BACKUP_DIR"/backup.log
+else
+    echo "$DATE: [FAILED] Backup failed!" >> "$BACKUP_DIR"/backup.log
+    exit 1
+fi
+
+set -e
+
+# Remove backups older than 7 days
+find "$BACKUP_DIR" -type f -name "*.tar.gz" -mtime +7 -delete
