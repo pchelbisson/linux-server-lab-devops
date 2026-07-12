@@ -1,4 +1,4 @@
-# Example sshd_config (safe for GitHub)
+# Example sshd_config
 
 Port 22
 Protocol 2
@@ -8,4 +8,7 @@ PubkeyAuthentication yes
 ChallengeResponseAuthentication no
 UsePAM yes
 AllowTcpForwarding no
+AllowUsers devops
 X11Forwarding no
+MaxAuthTries 3
+LoginGraceTime 30

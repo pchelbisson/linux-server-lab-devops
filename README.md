@@ -90,6 +90,9 @@ linux-server-lab-devops/
 
 * **`X-XSS-Protection`** - It is considered outdated and insecure, so I decided not to use it. `CSP` decided not to use it, relying on other headers for now.
 
+### SSH Configuration
+* **`AllowUsers devops`** - Restricts SSH login to a single, explicit account rather than any user with a valid key or password. This narrows the attack surface: even if another system account's credentials were ever exposed, SSH access would still be blocked for it. Using an explicit username instead of a group avoids relying on group membership as an implicit trust boundary — the allowed accounts are visible directly in the config, not inferred from `/etc/group`.
+* **Why not fail2ban alone** - Using only one leaves a gap: without `AllowUsers`, a leaked key grants instant access; without `fail2ban`, botnets can continuously flood the SSH port, causing log pollution and potential denial of service (DoS). Together, they form a robust proactive and reactive defense system.
 
 ## Skills I've honed 
 
