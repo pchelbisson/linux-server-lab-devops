@@ -92,7 +92,18 @@ linux-server-lab-devops/
 
 ### SSH Configuration
 * **`AllowUsers devops`** - Restricts SSH login to a single, explicit account rather than any user with a valid key or password. This narrows the attack surface: even if another system account's credentials were ever exposed, SSH access would still be blocked for it. Using an explicit username instead of a group avoids relying on group membership as an implicit trust boundary — the allowed accounts are visible directly in the config, not inferred from `/etc/group`.
+
 * **Why not fail2ban alone** - Using only one leaves a gap: without `AllowUsers`, a leaked key grants instant access; without `fail2ban`, botnets can continuously flood the SSH port, causing log pollution and potential denial of service (DoS). Together, they form a robust proactive and reactive defense system.
+
+### Jail Configuration
+* **`maxretry = 5`** - This ensures a sufficient margin for legitimate users. When connecting to a new server, an SSH client (or SSH agent) may automatically attempt several local keys in succession. Each key submission rejected by the server counts as an authentication failure. A limit of five attempts prevents false positives and allows the engineer some leeway for typos.
+
+* **`findtime = 15m`** - A 15-minute window effectively captures statistics on attempts spread out over time. Automated brute-force scripts often pause between sessions to bypass default 10-minute filters. Fifteen minutes strikes an optimal balance between detecting "slow" brute-force attacks and clearing old records from server memory.
+
+* **`bantime = 1h`** - A one-hour ban drastically reduces the economic efficiency of an attack for a botnet. Most scanners operate in a streaming fashion: upon encountering a hard packet drop lasting one hour, the script removes the server's IP from its active queue and switches to other targets.
+
+* **`Bantime Increment Configuration`** - Progressive ban time escalation (`bantime.increment`) has been intentionally **disabled**. Given the current scale of the infrastructure, a standard one-hour ban is sufficient to neutralize botnet activity. Using incremental escalation carries an increased risk of the administrator accidentally locking themselves out for an extended period due to automation script failures.
+
 
 ## Skills I've honed 
 
