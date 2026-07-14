@@ -125,27 +125,31 @@ fi
 
 # Cron job setup for backup script
 
-BACKUP_SCRIPT="$SCRIPT_DIR/backup/backup.sh"
-
-# Check if the backup script exists and has execute permissions
-if [ ! -x "$BACKUP_SCRIPT" ]; then
-  echo "Setting up permissions for the backup script..."
-  chmod +x "$BACKUP_SCRIPT"
-fi
-
-CRON_JOB="0 0 * * * $BACKUP_SCRIPT >/dev/null 2>&1"
-
-# Get the existing cron jobs
-EXISTING_CRON="$(crontab -l 2>/dev/null || true)"
-
-# Check if the backup job is already added
-if echo "$EXISTING_CRON" | grep -Fq "$BACKUP_SCRIPT"; then
-  echo "Cron job for backup already exists. Skipping."
+if ! command -v crontab &> /dev/null; then
+  echo "Warning: cron is not installed on the system. Skipping backup job scheduling." >&2
 else
-  # Merge existing jobs with the new one and load back into crontab
-  # Use printf to correctly handle empty crontab and avoid extra newlines
-  (echo "$EXISTING_CRON"; echo "$CRON_JOB") | grep -v '^$' | crontab -
-  echo "Cron job successfully added: $CRON_JOB"
+  BACKUP_SCRIPT="$SCRIPT_DIR/backup/backup.sh"
+  
+  # Check if the backup script exists and has execute permissions
+  if [ ! -x "$BACKUP_SCRIPT" ]; then
+    echo "Setting up permissions for the backup script..."
+    chmod +x "$BACKUP_SCRIPT"
+  fi
+
+  CRON_JOB="0 0 * * * $BACKUP_SCRIPT >/dev/null 2>&1"
+
+  # Get the existing cron jobs
+  EXISTING_CRON="$(crontab -l 2>/dev/null || true)"
+
+  # Check if the backup job is already added
+  if echo "$EXISTING_CRON" | grep -Fq "$BACKUP_SCRIPT"; then
+    echo "Cron job for backup already exists. Skipping."
+  else
+    # Merge existing jobs with the new one and load back into crontab
+    # Use printf to correctly handle empty crontab and avoid extra newlines
+    (echo "$EXISTING_CRON"; echo "$CRON_JOB") | grep -v '^$' | crontab -
+    echo "Cron job successfully added: $CRON_JOB"
+  fi
 fi
 
 

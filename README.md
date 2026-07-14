@@ -4,10 +4,22 @@ A beginner-friendly DevOps lab project: Linux server setup, security hardening, 
 
 A DevOps tutorial project covering basic Linux server setup, secure SSH access, network rules, Nginx, and backups.
 
+## Prerequisites
+
+This script configures, but does not install, the following packages:
+`nginx`, `fail2ban`, `ufw`, `cron`.
+
+Install them first if missing:
+```bash
+sudo apt update && sudo apt install -y nginx fail2ban ufw cron
+```
+
 ## Quick Start
 
 To harden your clean Ubuntu server in one command, run:
 ```bash
+cd linux-server-lab-devops
+chmod +x provision.sh
 sudo ./provision.sh
 ```
 
