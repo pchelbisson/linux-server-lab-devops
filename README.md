@@ -41,6 +41,7 @@ sudo ./provision.sh
   - 22 (SSH)
   - 80 (HTTP)
 - Everything else is blocked.
+- All settings are automated by a script.
 
 ### 4. Installing and Configuring Fail2Ban
 ---

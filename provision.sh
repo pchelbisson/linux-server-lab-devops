@@ -100,6 +100,29 @@ else
   fi
 fi
 
+# UFW configuration
+
+# Check if UFW is installed
+if ! command -v ufw &> /dev/null; then
+  echo "Warning: UFW is not installed on the system. Skipping firewall configuration." >&2
+else
+  echo "Configuring UFW firewall..."
+
+  # Add allow rules FIRST to prevent lockout
+  # Note: UFW is idempotent; running 'allow' on existing rules won't duplicate them.
+  ufw allow 22/tcp
+  ufw allow 80/tcp
+
+  # Set default policies
+  ufw default deny incoming
+  ufw default allow outgoing
+
+  # Enable firewall without interactive prompt
+  ufw --force enable
+
+  echo "UFW firewall has been successfully configured and enabled."
+fi
+
 # Cron job setup for backup script
 
 BACKUP_SCRIPT="$SCRIPT_DIR/backup/backup.sh"
