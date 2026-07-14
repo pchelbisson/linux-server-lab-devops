@@ -4,6 +4,13 @@ A beginner-friendly DevOps lab project: Linux server setup, security hardening, 
 
 A DevOps tutorial project covering basic Linux server setup, secure SSH access, network rules, Nginx, and backups.
 
+## Quick Start
+
+To harden your clean Ubuntu server in one command, run:
+```bash
+sudo ./provision.sh
+```
+
 ## What I did in this project
 
 ### 1. Installed and performed basic Linux configuration (Ubuntu 20.04)
