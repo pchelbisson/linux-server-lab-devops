@@ -17,12 +17,10 @@ TARGETS=(/etc/nginx /etc/ssh /etc/fail2ban)
 set +e
 
 # Create the archive
-tar -czvf "$BACKUP_DIR"/configs_backup_"$DATE".tar.gz "${TARGETS[@]}"
-
-if [ $? -eq 0 ]; then
-    echo "$DATE: [SUCCESS] Backup created successfully at $BACKUP_DIR/configs_backup_$DATE.tar.gz" >> "$BACKUP_DIR"/backup.log
+if tar -czvf "$BACKUP_DIR/configs_backup_$DATE.tar.gz" "${TARGETS[@]}"; then
+    echo "$DATE: [SUCCESS] Backup created successfully at $BACKUP_DIR/configs_backup_$DATE.tar.gz" >> "$BACKUP_DIR/backup.log"
 else
-    echo "$DATE: [FAILED] Backup failed!" >> "$BACKUP_DIR"/backup.log
+    echo "$DATE: [FAILED] Backup failed!" >> "$BACKUP_DIR/backup.log"
     exit 1
 fi
 
