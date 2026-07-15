@@ -1,3 +1,5 @@
+[![Lint Shell Scripts](https://github.com/pchelbisson/linux-server-lab-devops/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/pchelbisson/linux-server-lab-devops/actions/workflows/shellcheck.yml)
+
 A beginner-friendly DevOps lab project: Linux server setup, security hardening, SSH keys, firewall, fail2ban, Nginx static site, backup script.
 
 # Linux Server Setup \& Hardening — Lab Project
