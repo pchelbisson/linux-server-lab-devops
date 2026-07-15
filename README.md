@@ -21,6 +21,9 @@ To harden your clean Ubuntu server in one command, run:
 cd linux-server-lab-devops
 chmod +x provision.sh
 sudo ./provision.sh
+# check your new harden
+chmod +x verify.sh
+sudo ./verify.sh
 ```
 
 ## What I did in this project
@@ -86,6 +89,8 @@ I created my own bash script, backup.sh, which:
 
 ```text
 linux-server-lab-devops/
+├── provision.sh
+├── verify.sh
 ├── backup/
 │   └── backup.sh
 ├── configs/
