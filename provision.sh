@@ -71,7 +71,19 @@ if ! command -v nginx &> /dev/null; then
 else
   SRC_NGINX="$SCRIPT_DIR/configs/nginx.conf.example"
   DEST_NGINX="/etc/nginx/nginx.conf"
+  SRC_INDEX="$SCRIPT_DIR/web/index.html"
+  DEST_INDEX="/var/www/html/index.html"
+  
+  mkdir -p /var/www/html
 
+  if ! cmp -s "$SRC_INDEX" "$DEST_INDEX" 2>/dev/null; then
+    echo "Changes to index.html detected, or the file is missing. Updating..."
+    cp "$SRC_INDEX" "$DEST_INDEX"
+    chmod 644 "$DEST_INDEX"
+  else
+    echo "index.html is up to date, no copy required."
+  fi
+  
   # Check if the configuration is already up to date
   if [ -f "$DEST_NGINX" ] && cmp -s "$SRC_NGINX" "$DEST_NGINX"; then
     echo "The Nginx configuration is already up to date. No changes required."
